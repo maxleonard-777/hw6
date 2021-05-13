@@ -22,10 +22,16 @@ exports.handler = async function(event) {
   let year = event.queryStringParameters.year
   let genre = event.queryStringParameters.genre
   
+  // create a new object to hold the movie data
+  let moviesToReturn = {}
+
+  // start with an empty Array for the movies
+  moviesToReturn.movies = []
+
   if (year == undefined || genre == undefined) {
     return {
       statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-      body: `Nope!` // a string of data
+      body: `Invalid search!` // a string of data
     }
   }
   else {
@@ -35,13 +41,21 @@ exports.handler = async function(event) {
     }
 
     for (let i=0; i < moviesFromCsv.length; i++) {
-
+    // store each movie in memory
+    let movie = moviesFromCsv[i]
+    // check if the year equals user entered year and genere is included in the genre description, if so:
+    if (movie.genres.includes(genre) && listing.startYear == year) {
+      // add the listing to the Array of listings to return
+      moviesToReturn.movies.push(movie)
     }
+
+  // add the number of movies to the returned movies Object
+  moviesToReturn.count = moviesToReturn.movies.length
 
     // a lambda function returns a status code and a string of data
     return {
       statusCode: 200, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-      body: `Hello from the back-end!` // a string of data
+      body: JSON.stringify(moviesToReturn) // a string of data
     }
   }
 }
