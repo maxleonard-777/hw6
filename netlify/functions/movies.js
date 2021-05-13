@@ -50,7 +50,7 @@ exports.handler = async function(event) {
     }
 
   // add the number of movies to the returned movies Object
-  moviesToReturn.count = moviesToReturn.movies.length
+  moviesToReturn.numResults = moviesToReturn.movies.length
 
     // a lambda function returns a status code and a string of data
     return {
